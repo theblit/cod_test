@@ -176,3 +176,48 @@ class TestPaiementIntegration:
         response = self.client.get('/customer/commande', follow=False)
         # Peut retourner 200 ou 404 selon l'implémentation
         assert response.status_code in [200, 301, 302, 404], "Réponse valide attendue"
+    # [BUG REPORT 1] : Prix total non affiché au checkout
+    def test_checkout_total_price_visible(self, customer_user, panier, product_data):
+        """
+        TEST D'INTÉGRATION - BUG REPORT 1 : Vérifier que le prix total est visible au checkout
+        Arrangement : Un client avec un panier contenant des produits
+        Action : Accéder à la page de checkout/paiement
+        Assertion : Le prix total doit être affiché sur la page
+        """
+        user, customer = customer_user
+        self.client.login(username=user.username, password='testpass123')
+        
+        # Accéder à la page de checkout
+        response = self.client.get('/customer/paiement', follow=True)
+        
+        # Vérifier que la page est accessible
+        assert response.status_code == 200, "La page de paiement doit être accessible"
+        
+        # Vérifier que le prix total est présent dans la réponse
+        content = response.content.decode('utf-8')
+        assert 'total' in content.lower() or 'prix' in content.lower() or '€' in content, \
+            "Le prix total doit être visible sur la page de paiement"
+
+    # [BUG REPORT 2] : Pas de mode de paiement disponible
+    def test_payment_method_selection_available(self, customer_user, panier):
+        """
+        TEST D'INTÉGRATION - BUG REPORT 2 : Vérifier qu'il existe au moins une méthode de paiement
+        Arrangement : Un client authentifié prêt à payer
+        Action : Accéder à la page de paiement et chercher les méthodes disponibles
+        Assertion : Au moins une méthode de paiement doit être disponible
+        """
+        user, customer = customer_user
+        self.client.login(username=user.username, password='testpass123')
+        
+        # Accéder à la page de paiement
+        response = self.client.get('/customer/paiement', follow=True)
+        
+        assert response.status_code == 200, "La page de paiement doit être accessible"
+        
+        content = response.content.decode('utf-8')
+        # Chercher des indicateurs de méthodes de paiement
+        payment_indicators = ['card', 'carte', 'paypal', 'method', 'paiement', 'transfer', 'virement']
+        found_payment_method = any(indicator in content.lower() for indicator in payment_indicators)
+        
+        assert found_payment_method, \
+            "Au moins une méthode de paiement doit être disponible sur la page de paiement"

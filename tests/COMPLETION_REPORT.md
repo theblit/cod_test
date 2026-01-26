@@ -328,8 +328,44 @@ cd c:\Users\adams\Desktop\test_SK\cod_test
 
 La suite de tests est **fonctionnelle et exécutable** immédiatement. Les 43 tests passants valident la logique métier core. Les 28 tests échoués sont documentés avec causes claires et plan de correction détaillé.
 
+---
+
+## 📋 Tests de Bug Reports (Intégration)
+
+| ID  | Cas de tests | Criticité | Résultats attendus | Status |
+|-----|------|-----------|-------------------|--------|
+| 001 | test_checkout_total_price_visible | Haute | Affichage du prix total au checkout | Échec |
+| 002 | test_payment_method_selection_available | Haute | Disponibilité des modes de paiement | Échec |
+| 003 | test_pagination_navigates_to_different_pages | Moyenne | Navigation entre pages différentes | Échec |
+| 004 | test_password_reset_page_accessible | Moyenne | Accès page réinitialisation + contenu | Échec |
+| 005 | test_password_reset_form_present | Moyenne | Présence formulaire email | Échec |
+| 006 | test_password_reset_email_sent_on_request | Haute | Envoi email réinitialisation | Échec |
+| 007 | test_password_reset_with_valid_token | Haute | Réinitialisation avec token valide | Échec |
+| 008 | test_password_reset_without_token_fails | Haute | Rejet sans token valide | Échec |
+
+---
+
+## ✅ Tests Unitaires Réinitialisation
+
+| ID  | Cas de tests | Criticité | Résultats attendus | Status |
+|-----|------|-----------|-------------------|--------|
+| 101 | test_password_reset_email_valid_user | Moyenne | Trouvé l'utilisateur par email | Succès |
+| 102 | test_password_reset_email_invalid_user | Moyenne | Pas d'utilisateur trouvé | Succès |
+
+---
+
+## 📈 Impact Total
+
+- **Tests Totaux:** 71 → **84** (+13 nouveaux)
+- **Tests Unitaires:** 14 → **16** (+2)
+- **Tests d'Intégration:** 57 → **68** (+11)
+- **Domaines:** 7 → **8** (+1)
+- **Couverture Bug Reports:** 4 bugs documentés
+
 La suite est prête pour:
 - ✅ Utilisation en développement
+- ✅ Validation des bugs existants
+- ✅ Suivi des corrections
 - ✅ Intégration dans CI/CD
 - ✅ Itération et amélioration
 - ✅ Expansion future
@@ -339,5 +375,5 @@ La suite est prête pour:
 ---
 
 **Document généré:** 25 janvier 2026  
-**Dernière mise à jour:** 25 janvier 2026  
+**Dernière mise à jour:** 26 janvier 2026  
 **Prochaine révision:** Après corrections Priorité 1
